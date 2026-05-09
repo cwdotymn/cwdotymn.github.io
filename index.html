@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chad Doty — DEX Executive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0e0e;
+    --paper: #f5f2ec;
+    --accent: #1a3a5c;
+    --rule: #c8bfa8;
+    --highlight: #d4a853;
+    --muted: #6b6560;
+    --white: #ffffff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.6; overflow-x: hidden; }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 5rem; border-bottom: 1px solid var(--rule);
+    position: sticky; top: 0; background: var(--paper); z-index: 100;
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+
+  header { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
+  .header-left { background: var(--accent); padding: 4rem 4rem 4rem 5rem; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+  .header-left::after { content: ''; position: absolute; right: -1px; top: 0; width: 60px; height: 100%; background: var(--paper); clip-path: polygon(60px 0, 100% 0, 100% 100%, 0 100%); }
+  .monogram { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 400; color: var(--highlight); letter-spacing: 0.3em; text-transform: uppercase; }
+  .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 900; color: var(--white); line-height: 1.0; margin-bottom: 1.5rem; }
+  .hero-tagline { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--highlight); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 2rem; border-left: 2px solid var(--highlight); padding-left: 1rem; }
+  .hero-desc { font-size: 1rem; color: rgba(255,255,255,0.75); line-height: 1.8; max-width: 380px; margin-bottom: 3rem; }
+  .hero-cta { display: inline-block; padding: 0.85rem 2rem; background: transparent; border: 1px solid var(--highlight); color: var(--highlight); font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; transition: all 0.25s ease; align-self: flex-start; }
+  .hero-cta:hover { background: var(--highlight); color: var(--accent); }
+  .header-right { padding: 4rem 5rem 4rem 5rem; display: flex; flex-direction: column; justify-content: flex-end; }
+  .header-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8rem; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .stat { border-top: 1px solid var(--rule); padding-top: 1rem; }
+  .stat-number { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.25rem; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  section { padding: 6rem 5rem; max-width: 1200px; margin: 0 auto; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--highlight); margin-bottom: 3rem; display: flex; align-items: center; gap: 1rem; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+  h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; color: var(--accent); line-height: 1.15; margin-bottom: 1.5rem; }
+
+  .about-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 5rem; align-items: start; }
+  .about-body { font-size: 1.05rem; line-height: 1.85; color: var(--ink); }
+  .about-body p + p { margin-top: 1.25rem; }
+  .expertise-list { list-style: none; border-left: 2px solid var(--accent); }
+  .expertise-list li { padding: 0.6rem 1.25rem; font-family: 'DM Mono', monospace; font-size: 0.78rem; letter-spacing: 0.05em; color: var(--accent); border-bottom: 1px solid var(--rule); }
+  .expertise-list li:last-child { border-bottom: none; }
+
+  .wins-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 3rem; background: var(--rule); }
+  .win-card { background: #f0ede5; padding: 2.5rem; }
+  .win-metric { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; }
+  .win-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+  #services { background: var(--accent); max-width: none; padding: 6rem 0; }
+  .services-inner { max-width: 1200px; margin: 0 auto; padding: 0 5rem; }
+  #services .section-label { color: var(--highlight); }
+  #services .section-label::after { background: rgba(255,255,255,0.15); }
+  #services h2 { color: var(--white); }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 3rem; }
+  .service-card { padding: 2.5rem; border-right: 1px solid rgba(255,255,255,0.12); border-top: 1px solid rgba(255,255,255,0.12); }
+  .service-card:nth-child(3n) { border-right: none; }
+  .service-card:nth-child(-n+3) { border-top: none; }
+  .service-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: 1rem; }
+  .service-title { font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 500; color: var(--white); margin-bottom: 0.75rem; }
+  .service-desc { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
+  .service-tag { display: inline-block; margin-top: 1.25rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--highlight); border: 1px solid var(--highlight); padding: 0.25rem 0.6rem; }
+
+  .process-list { counter-reset: step; margin-top: 3rem; }
+  .process-item { counter-increment: step; display: grid; grid-template-columns: 80px 1fr; gap: 2rem; padding: 2.5rem 0; border-bottom: 1px solid var(--rule); align-items: start; }
+  .process-item::before { content: counter(step, decimal-leading-zero); font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--rule); }
+  .process-title { font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1.05rem; color: var(--accent); margin-bottom: 0.5rem; }
+  .process-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
+
+  #contact { background: var(--ink); max-width: none; padding: 6rem 0; }
+  .contact-inner { max-width: 1200px; margin: 0 auto; padding: 0 5rem; }
+  #contact .section-label { color: var(--highlight); }
+  #contact .section-label::after { background: rgba(255,255,255,0.1); }
+  #contact h2 { color: var(--white); margin-bottom: 0.75rem; }
+  .contact-sub { color: rgba(255,255,255,0.5); font-size: 0.95rem; margin-bottom: 3rem; max-width: 500px; }
+  .contact-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .contact-link { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.75rem; border: 1px solid rgba(255,255,255,0.15); color: var(--white); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.2s; }
+  .contact-link:hover { border-color: var(--highlight); color: var(--highlight); }
+
+  footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.06); padding: 1.5rem 5rem; display: flex; justify-content: space-between; align-items: center; }
+  footer p { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    header { grid-template-columns: 1fr; }
+    .header-left::after { display: none; }
+    .header-right, .header-left { padding: 3rem; }
+    section { padding: 4rem 2rem; }
+    nav { padding: 1.25rem 2rem; }
+    .nav-links { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .wins-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { border-right: none; border-top: 1px solid rgba(255,255,255,0.12); }
+    .service-card:first-child { border-top: none; }
+    .services-inner, .contact-inner { padding: 0 2rem; }
+    #services, #contact { padding: 4rem 0; }
+    footer { padding: 1.5rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Chad Doty</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<header>
+  <div class="header-left">
+    <div class="monogram">CWD / DEX</div>
+    <div>
+      <div class="hero-name">Chad<br>Doty</div>
+      <div class="hero-tagline">Digital Employee Experience · Identity Security · Agentic AI</div>
+      <p class="hero-desc">Enterprise IT executive with 20 years at scale — transforming reactive IT organizations into proactive, AI-driven experience platforms. $30M portfolio. 48K+ endpoints. Measurable outcomes.</p>
+      <a href="#contact" class="hero-cta">Let's Talk →</a>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">Lakeville, MN · Available for Fractional, Advisory &amp; VP/Sr. Director Roles</div>
+  </div>
+  <div class="header-right">
+    <div class="header-eyebrow">20 Years · Ecolab Inc. · Fortune 500 Enterprise</div>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-number">$30<span style="font-size:1.5rem">M</span></div>
+        <div class="stat-label">Global Portfolio</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">48<span style="font-size:1.5rem">K</span></div>
+        <div class="stat-label">Endpoints Managed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">25<span style="font-size:1.5rem">%</span></div>
+        <div class="stat-label">YoY Ticket Reduction</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">50<span style="font-size:1.5rem">+</span></div>
+        <div class="stat-label">Person Organization</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="section-label">About</div>
+  <div class="about-grid">
+    <div>
+      <h2>Where Technical Depth Meets Business Impact</h2>
+      <div class="about-body reveal">
+        <p>I'm a Senior Director / VP-level IT executive with two decades of experience building and scaling enterprise technology platforms at Ecolab — a $16B global company operating in 170 countries. My career spans the full IT stack, from security architecture and identity infrastructure to endpoint engineering and the emerging discipline of Digital Employee Experience.</p>
+        <p>My current focus sits at the intersection of DEX and agentic AI: using platforms like Nexthink, Microsoft Copilot, and Azure Foundry to create IT environments that self-diagnose, self-heal, and proactively serve employees before they submit a ticket. I've lived this transformation from concept to 48,000-endpoint production scale.</p>
+        <p>I work at the executive level — translating board-level strategy into durable technical architecture — while staying close enough to the platform to know when the telemetry is lying.</p>
+      </div>
+    </div>
+    <div class="reveal">
+      <ul class="expertise-list">
+        <li>Digital Employee Experience (DEX)</li>
+        <li>Nexthink · Client Observability</li>
+        <li>Microsoft Copilot / AI Governance</li>
+        <li>Identity &amp; Access Management</li>
+        <li>Entra ID · Okta · SailPoint</li>
+        <li>BeyondTrust PAM · Zero Trust</li>
+        <li>M&amp;A Integration · Day-1 Onboarding</li>
+        <li>Intune · JAMF · Endpoint Mgmt</li>
+        <li>Fractional IT Leadership</li>
+        <li>CISSP · Azure AI-900</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="impact" style="background:#f0ede5;max-width:none;padding:6rem 0;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 5rem;">
+    <div class="section-label">Proven Impact</div>
+    <h2>Results That Speak for Themselves</h2>
+    <div class="wins-grid reveal">
+      <div class="win-card">
+        <div class="win-metric">25% YoY</div>
+        <div class="win-desc">Global ticket volume reduction after deploying Nexthink for real-time telemetry and automated root-cause detection across 48,000+ endpoints.</div>
+      </div>
+      <div class="win-card">
+        <div class="win-metric">$1M+</div>
+        <div class="win-desc">Annual licensing savings from orchestrating the Okta → Azure AD (Entra ID) identity migration, while simultaneously hardening Zero Trust posture with Conditional Access.</div>
+      </div>
+      <div class="win-card">
+        <div class="win-metric">2,500/mo</div>
+        <div class="win-desc">Automated remote resolutions monthly via Nexthink client-observability — shifting the support model from reactive ticketing to proactive DEX management at global scale.</div>
+      </div>
+      <div class="win-card">
+        <div class="win-metric">$6M / 6mo</div>
+        <div class="win-desc">Secured C-Suite approval and delivered Microsoft Copilot enterprise-wide six months ahead of schedule, achieving a 20% uplift in DEX metrics within the first year of deployment.</div>
+      </div>
+      <div class="win-card">
+        <div class="win-metric">$750K</div>
+        <div class="win-desc">Annual OpEx savings from a security stack architectural audit — eliminating redundant platforms, reducing endpoint complexity, and improving enterprise system performance.</div>
+      </div>
+      <div class="win-card">
+        <div class="win-metric">6+ / Year</div>
+        <div class="win-desc">Global M&amp;A integrations led annually — authoring and executing Day-1 onboarding for M365 and Island.io, eliminating hardware provisioning bottlenecks for transitioning teams.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="services" style="background:var(--accent);padding:6rem 0;">
+  <div class="services-inner">
+    <div class="section-label">Services</div>
+    <h2>How I Can Help</h2>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <div class="service-title">Fractional DEX Leadership</div>
+        <div class="service-desc">VP/Director-level embedded leadership for organizations standing up or maturing a DEX practice. Strategy, tooling, team coaching, and executive reporting — without the full-time headcount.</div>
+        <span class="service-tag">Fractional</span>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">02</div>
+        <div class="service-title">Nexthink Program Design</div>
+        <div class="service-desc">Platform deployment, data model architecture, campaign strategy, and automated remediation workflow design. Shift your support model from reactive ticketing to proactive experience management.</div>
+        <span class="service-tag">Implementation</span>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">03</div>
+        <div class="service-title">AI Governance &amp; Copilot Rollout</div>
+        <div class="service-desc">End-to-end Microsoft Copilot deployment strategy: OCM, governance frameworks, Power Platform controls, SharePoint and GitHub Enterprise policy — responsible adoption at enterprise scale.</div>
+        <span class="service-tag">AI Strategy</span>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">04</div>
+        <div class="service-title">Identity Modernization</div>
+        <div class="service-desc">IAM strategy and execution across Entra ID, Okta, SailPoint, and BeyondTrust PAM. Zero-trust architecture, CIAM for external users, IGA/JML automation, and audit-ready governance.</div>
+        <span class="service-tag">Identity</span>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">05</div>
+        <div class="service-title">M&amp;A IT Integration</div>
+        <div class="service-desc">Day-1 playbooks, identity onboarding, device provisioning, and DEX integration for acquisitions. Built from experience leading 6+ global integrations annually — including Island.io and M365 deployment.</div>
+        <span class="service-tag">M&amp;A</span>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">06</div>
+        <div class="service-title">IT Organization Assessment</div>
+        <div class="service-desc">Operating model design, platform rationalization, and vendor strategy for IT leaders navigating scale, consolidation, or the shift to experience-first delivery. Honest diagnosis, specific roadmap.</div>
+        <span class="service-tag">Advisory</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="approach">
+  <div class="section-label">Approach</div>
+  <h2>How I Work</h2>
+  <div class="process-list">
+    <div class="process-item reveal">
+      <span></span>
+      <div>
+        <div class="process-title">Outcomes Over Outputs</div>
+        <div class="process-desc">I measure success by what moves: ticket deflection rates, MTTR, experience score deltas, licensing spend eliminated. Not slide decks delivered.</div>
+      </div>
+    </div>
+    <div class="process-item reveal">
+      <span></span>
+      <div>
+        <div class="process-title">Quantitative Goals, Measurable Results</div>
+        <div class="process-desc">Every engagement translates qualitative objectives into platform-driven, auditable outcomes. If it can't be measured, the architecture isn't done yet.</div>
+      </div>
+    </div>
+    <div class="process-item reveal">
+      <span></span>
+      <div>
+        <div class="process-title">Executive Alignment Without the Jargon</div>
+        <div class="process-desc">I've earned C-Suite approval for $6M+ programs. I know how to frame technical investment in business terms — and how to hold the room when the CFO asks hard questions.</div>
+      </div>
+    </div>
+    <div class="process-item reveal">
+      <span></span>
+      <div>
+        <div class="process-title">Build Durable Capability</div>
+        <div class="process-desc">My goal is to make myself unnecessary. Engagements are designed to mature your team, transfer knowledge, and leave lasting operating capacity — not dependency.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="contact" style="background:var(--ink);padding:6rem 0;">
+  <div class="contact-inner">
+    <div class="section-label" style="color:var(--highlight);">Contact</div>
+    <h2 style="color:var(--white);">Ready to talk?</h2>
+    <p class="contact-sub">Available for fractional DEX leadership, advisory engagements, and select VP/Senior Director opportunities in DEX, EUC, and enterprise IT platform leadership.</p>
+    <div class="contact-links">
+      <a href="mailto:cwdoty@gmail.com" class="contact-link">✉ cwdoty@gmail.com</a>
+      <a href="https://linkedin.com/in/-chad-doty" class="contact-link">in LinkedIn</a>
+      <a href="tel:6514703691" class="contact-link">✆ 651.470.3691</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Chad W. Doty · Lakeville, MN</p>
+  <p>DEX · Identity · Agentic AI</p>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
