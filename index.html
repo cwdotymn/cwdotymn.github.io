@@ -17,110 +17,165 @@
     --white: #ffffff;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.6; overflow-x: hidden; }
+  html { scroll-snap-type: y mandatory; overflow-y: scroll; height: 100%; }
+  body { font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.6; overflow-x: hidden; height: 100%; }
 
+  /* Each page-section fills the viewport */
+  .page {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding: 5rem;
+  }
+
+  /* NAV */
   nav {
+    position: fixed; top: 0; left: 0; right: 0;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1.5rem 5rem; border-bottom: 1px solid var(--rule);
-    position: sticky; top: 0; background: var(--paper); z-index: 100;
+    padding: 1.25rem 4rem;
+    z-index: 200;
+    background: rgba(245,242,236,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
   }
   .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); text-decoration: none; }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
   .nav-links a { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
   .nav-links a:hover { color: var(--accent); }
 
-  header { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
-  .header-left { background: var(--accent); padding: 4rem 4rem 4rem 5rem; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
-  .header-left::after { content: ''; position: absolute; right: -1px; top: 0; width: 60px; height: 100%; background: var(--paper); clip-path: polygon(60px 0, 100% 0, 100% 100%, 0 100%); }
-  .monogram { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 400; color: var(--highlight); letter-spacing: 0.3em; text-transform: uppercase; }
-  .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 900; color: var(--white); line-height: 1.0; margin-bottom: 1.5rem; }
-  .hero-tagline { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--highlight); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 2rem; border-left: 2px solid var(--highlight); padding-left: 1rem; }
-  .hero-desc { font-size: 1rem; color: rgba(255,255,255,0.75); line-height: 1.8; max-width: 380px; margin-bottom: 3rem; }
+  /* PAGE 1 — HERO */
+  #hero {
+    background: var(--accent);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 5rem 5rem 6rem;
+    position: relative;
+  }
+  .hero-left::after {
+    content: ''; position: absolute; right: -1px; top: 0;
+    width: 60px; height: 100%;
+    background: var(--paper);
+    clip-path: polygon(60px 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .monogram { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--highlight); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2.5rem; }
+  .hero-name { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 6vw, 6rem); font-weight: 900; color: var(--white); line-height: 1.0; margin-bottom: 1.5rem; }
+  .hero-tagline { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--highlight); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 2rem; border-left: 2px solid var(--highlight); padding-left: 1rem; }
+  .hero-desc { font-size: 1rem; color: rgba(255,255,255,0.72); line-height: 1.85; max-width: 400px; margin-bottom: 3rem; }
   .hero-cta { display: inline-block; padding: 0.85rem 2rem; background: transparent; border: 1px solid var(--highlight); color: var(--highlight); font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; transition: all 0.25s ease; align-self: flex-start; }
   .hero-cta:hover { background: var(--highlight); color: var(--accent); }
-  .header-right { padding: 4rem 5rem 4rem 5rem; display: flex; flex-direction: column; justify-content: flex-end; }
-  .header-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8rem; }
-  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .hero-location { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: rgba(255,255,255,0.25); letter-spacing: 0.1em; margin-top: 3rem; }
+
+  .hero-right {
+    background: var(--paper);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 8rem 5rem 5rem 5rem;
+    gap: 3rem;
+  }
+  .headshot-wrap {
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--highlight);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+  }
+  .headshot-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; width: 100%; max-width: 340px; }
   .stat { border-top: 1px solid var(--rule); padding-top: 1rem; }
-  .stat-number { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.25rem; }
-  .stat-label { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .stat-number { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.2rem; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
 
-  section { padding: 6rem 5rem; max-width: 1200px; margin: 0 auto; }
-  .section-label { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--highlight); margin-bottom: 3rem; display: flex; align-items: center; gap: 1rem; }
+  /* PAGE 2 — ABOUT */
+  #about { background: var(--paper); padding-top: 7rem; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--highlight); margin-bottom: 2.5rem; display: flex; align-items: center; gap: 1rem; }
   .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
-  h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; color: var(--accent); line-height: 1.15; margin-bottom: 1.5rem; }
-
+  h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 700; color: var(--accent); line-height: 1.15; margin-bottom: 1.5rem; }
   .about-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 5rem; align-items: start; }
-  .about-body { font-size: 1.05rem; line-height: 1.85; color: var(--ink); }
-  .about-body p + p { margin-top: 1.25rem; }
+  .about-body { font-size: 0.97rem; line-height: 1.85; color: var(--ink); }
+  .about-body p + p { margin-top: 1.1rem; }
   .expertise-list { list-style: none; border-left: 2px solid var(--accent); }
-  .expertise-list li { padding: 0.6rem 1.25rem; font-family: 'DM Mono', monospace; font-size: 0.78rem; letter-spacing: 0.05em; color: var(--accent); border-bottom: 1px solid var(--rule); }
+  .expertise-list li { padding: 0.55rem 1.25rem; font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.05em; color: var(--accent); border-bottom: 1px solid var(--rule); }
   .expertise-list li:last-child { border-bottom: none; }
 
-  .wins-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 3rem; background: var(--rule); }
-  .win-card { background: #f0ede5; padding: 2.5rem; }
-  .win-metric { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; }
-  .win-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+  /* PAGE 3 — IMPACT */
+  #impact { background: #f0ede5; }
+  .wins-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--rule); margin-top: 2.5rem; }
+  .win-card { background: #f0ede5; padding: 2rem 2rem; }
+  .win-metric { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; }
+  .win-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
 
-  #services { background: var(--accent); max-width: none; padding: 6rem 0; }
-  .services-inner { max-width: 1200px; margin: 0 auto; padding: 0 5rem; }
+  /* PAGE 4 — SERVICES */
+  #services { background: var(--accent); }
   #services .section-label { color: var(--highlight); }
   #services .section-label::after { background: rgba(255,255,255,0.15); }
   #services h2 { color: var(--white); }
-  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 3rem; }
-  .service-card { padding: 2.5rem; border-right: 1px solid rgba(255,255,255,0.12); border-top: 1px solid rgba(255,255,255,0.12); }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 2.5rem; }
+  .service-card { padding: 2rem; border-right: 1px solid rgba(255,255,255,0.12); border-top: 1px solid rgba(255,255,255,0.12); }
   .service-card:nth-child(3n) { border-right: none; }
   .service-card:nth-child(-n+3) { border-top: none; }
-  .service-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: 1rem; }
-  .service-title { font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 500; color: var(--white); margin-bottom: 0.75rem; }
-  .service-desc { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
-  .service-tag { display: inline-block; margin-top: 1.25rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--highlight); border: 1px solid var(--highlight); padding: 0.25rem 0.6rem; }
+  .service-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: rgba(255,255,255,0.07); line-height: 1; margin-bottom: 0.75rem; }
+  .service-title { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; color: var(--white); margin-bottom: 0.6rem; }
+  .service-desc { font-size: 0.84rem; color: rgba(255,255,255,0.58); line-height: 1.65; }
+  .service-tag { display: inline-block; margin-top: 1rem; font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--highlight); border: 1px solid var(--highlight); padding: 0.2rem 0.55rem; }
 
-  .process-list { counter-reset: step; margin-top: 3rem; }
-  .process-item { counter-increment: step; display: grid; grid-template-columns: 80px 1fr; gap: 2rem; padding: 2.5rem 0; border-bottom: 1px solid var(--rule); align-items: start; }
-  .process-item::before { content: counter(step, decimal-leading-zero); font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--rule); }
-  .process-title { font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1.05rem; color: var(--accent); margin-bottom: 0.5rem; }
-  .process-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
+  /* PAGE 5 — APPROACH */
+  #approach { background: var(--paper); }
+  .process-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin-top: 2.5rem; border: 1px solid var(--rule); }
+  .process-item { padding: 2.5rem; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .process-item:nth-child(2n) { border-right: none; }
+  .process-item:nth-last-child(-n+2) { border-bottom: none; }
+  .process-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--rule); line-height: 1; margin-bottom: 1rem; }
+  .process-title { font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1rem; color: var(--accent); margin-bottom: 0.5rem; }
+  .process-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.75; }
 
-  #contact { background: var(--ink); max-width: none; padding: 6rem 0; }
-  .contact-inner { max-width: 1200px; margin: 0 auto; padding: 0 5rem; }
+  /* PAGE 6 — CONTACT */
+  #contact { background: var(--ink); }
   #contact .section-label { color: var(--highlight); }
   #contact .section-label::after { background: rgba(255,255,255,0.1); }
   #contact h2 { color: var(--white); margin-bottom: 0.75rem; }
-  .contact-sub { color: rgba(255,255,255,0.5); font-size: 0.95rem; margin-bottom: 3rem; max-width: 500px; }
+  .contact-sub { color: rgba(255,255,255,0.45); font-size: 0.95rem; margin-bottom: 3rem; max-width: 520px; line-height: 1.7; }
   .contact-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
   .contact-link { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.75rem; border: 1px solid rgba(255,255,255,0.15); color: var(--white); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.2s; }
   .contact-link:hover { border-color: var(--highlight); color: var(--highlight); }
+  .footer-copy { position: absolute; bottom: 2rem; left: 5rem; font-family: 'DM Mono', monospace; font-size: 0.62rem; color: rgba(255,255,255,0.18); letter-spacing: 0.08em; }
 
-  footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.06); padding: 1.5rem 5rem; display: flex; justify-content: space-between; align-items: center; }
-  footer p { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; }
+  /* Scroll indicator */
+  .scroll-hint { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); font-family: 'DM Mono', monospace; font-size: 0.62rem; color: rgba(255,255,255,0.3); letter-spacing: 0.15em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .scroll-hint::after { content: ''; width: 1px; height: 40px; background: rgba(255,255,255,0.2); animation: scrollpulse 1.8s ease-in-out infinite; }
+  @keyframes scrollpulse { 0%,100% { opacity: 0.2; } 50% { opacity: 0.8; } }
 
-  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .reveal.visible { opacity: 1; transform: none; }
 
   @media (max-width: 900px) {
-    header { grid-template-columns: 1fr; }
-    .header-left::after { display: none; }
-    .header-right, .header-left { padding: 3rem; }
-    section { padding: 4rem 2rem; }
-    nav { padding: 1.25rem 2rem; }
+    nav { padding: 1rem 2rem; }
     .nav-links { display: none; }
-    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-    .wins-grid { grid-template-columns: 1fr; }
-    .services-grid { grid-template-columns: 1fr; }
-    .service-card { border-right: none; border-top: 1px solid rgba(255,255,255,0.12); }
-    .service-card:first-child { border-top: none; }
-    .services-inner, .contact-inner { padding: 0 2rem; }
-    #services, #contact { padding: 4rem 0; }
-    footer { padding: 1.5rem 2rem; }
+    .page { padding: 5rem 2rem 3rem; }
+    #hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 6rem 2rem 2rem; }
+    .hero-left::after { display: none; }
+    .hero-right { padding: 2rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .wins-grid { grid-template-columns: 1fr 1fr; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .process-grid { grid-template-columns: 1fr; }
+    .process-item:nth-child(2n) { border-right: none; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#" class="nav-logo">Chad Doty</a>
+  <a href="#hero" class="nav-logo">Chad Doty</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#impact">Impact</a></li>
@@ -130,41 +185,44 @@
   </ul>
 </nav>
 
-<header>
-  <div class="header-left">
+<!-- PAGE 1: HERO -->
+<section id="hero" class="page">
+  <div class="hero-left">
     <div class="monogram">CWD / DEX</div>
-    <div>
-      <div class="hero-name">Chad<br>Doty</div>
-      <div class="hero-tagline">Digital Employee Experience · Identity Security · Agentic AI</div>
-      <p class="hero-desc">Enterprise IT executive with 20 years at scale — transforming reactive IT organizations into proactive, AI-driven experience platforms. $30M portfolio. 48K+ endpoints. Measurable outcomes.</p>
-      <a href="#contact" class="hero-cta">Let's Talk →</a>
-    </div>
-    <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;">Lakeville, MN · Available for Fractional, Advisory &amp; VP/Sr. Director Roles</div>
+    <div class="hero-name">Chad<br>Doty</div>
+    <div class="hero-tagline">Digital Employee Experience · Identity Security · Agentic AI</div>
+    <p class="hero-desc">Enterprise IT executive with 20 years at scale — transforming reactive IT organizations into proactive, AI-driven experience platforms. $30M portfolio. 48K+ endpoints. Measurable outcomes.</p>
+    <a href="#contact" class="hero-cta">Let's Talk →</a>
+    <div class="hero-location">Lakeville, MN · Available for Fractional, Advisory &amp; VP/Sr. Director Roles</div>
   </div>
-  <div class="header-right">
-    <div class="header-eyebrow">20 Years · Ecolab Inc. · Fortune 500 Enterprise</div>
+  <div class="hero-right">
+    <div class="headshot-wrap">
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCADIAMgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6hUUo9aAO1PAqrgAFKBg0u2lwaYDcGnAYzS7aB1oATPtSgZpcClApXATAox2p2Mc1ieIvFlj4cjAnffcN92FPvH3PoKynOMI80nZGtOlKtJQgrs15ZUiUszbVHc1jX/jPSNPUiS7jZxxsQ7j+lcFd6hqvi1i00xtbMn5Yl4z+Hf8AGrdn4UijQYDSueW3+v4cV81iM6jB2pK59bhuH3Jc1aVvJHSL8RNJaUKZ9qnuykf0rYs9esr8ZgmSQYzwefyrirrwyjuMxf0wfyrB1PQrvTpxIgMeDlSpOB+Nc1LPZ3/eR0Oqpw/Ta/dSd/M9kBzQQa8x0b4iXWlsItRjaaHjLdXX8e/416Npup22r2q3FrKssTenb2PpX0mHxdLEq9N/I+UxWBr4R2nHTuWCM0gGaeRSEHFdp5w0jFNxxzTycU0igBpGKCOKdjn3pNtADCKaRipD1pu2gBhHFFOPX2ooAUDinfwmgdacBQAUo6GhetOoATHOaWlx6UoAJxQAnfFAFLWZ4m12Lw3o1xfS/MUGETP3mPQVMmoJyZcYuclFbsy/GfjKPw5AsECibUZh+7j67B/eb2rz3RtPlv717u7Zri5ZixZ+e/WqunfaNXvJb25bzLiVizOf6e1eg6HohjSIKm3cMHJ6V8BmOPniJ8sfhR+kZZgYYSnd/E92WNN05/kDxqEA49a6K201I1JWIHPU1Y0zSi23efu9feujs9KV8Eru4wFz0ryIwlI9WdVR3OVk09S+5l2jHHP8qpXWio8HlugdOvTt6V302kkfwDHpWZeaaRzsVgeg5qnSlEmNeMup4/r/AIajKyiBSCfXoPauYsL++8LXglgLoq/eQg7XHoR/WvZtU0tBGWCA9s1wGuaE00h+T5j90ngdK0pVZUZKUXZlVVCtBwmrpnZ+HfE1n4jtBLbyDeOHjJ+ZT6Gtavn27lu/Cl/FdWkpi2nawHTPUZr2nwj4kj8T6Ol0oCTL8ksefut/getfoGCxixMNdz81zDAvC1Pd+F7Gz9KaRmnUV6R5Iw8dqQj3p7CkoAYRzTSOCKkIHpim46mgBhHc0UpGKKAFXpT154/lSAcmnAY6UAIOpp/Wk207bigBMcY6mlx7UvNKBmgBMCvEviV4p/t3xdHpEMn+i2hO/HRn7n8On4GvXPEurroGg3+otjFtEzjPc9h+eK+V9Lu5LjWzesd7eaC5PfJJP615OZVOSi4rqe3lVJTr876HtHh7TRHAjKuQvrXfacBGsPfJ5z9K4zRroG2YRnc/8INdtpqea0bBQFFfnz3Pv1rsdLE4RdyruA5wOM1uWbqyDIIJ5Nc/D87qnljp1PFbNvBsxuAxjvW9NmNVXWpflMaj7wzj1rOvJUCH5sHip3IiyiDk1nXnmBTngenetZy0MqcdTCvr073jKkg8A461gapGvlkn5snHSuku42IyeBn0rnrt13vuHykmuHVs7nseU/EJFFiqhSHLZPHPFV/hV4l/sjxItq7/AOj3n7sjP8X8J/p+NTePrpTq5RRvUoW2g+nWuCtbk2t/bur4bcu09gfWvey+bpyi0eNmNNVackz6w/ioI4qpo96NR0u1uQc+ZGGP1xzVvbX3Sd1c/PGtbDSPWk208g0m0+lMQwikIzTiM0hB+tADGGBRTyD3ooLEHSnL0pKcB3oIFH60fwmlAzS4GaAAe/WlwOtIOtPGMH0oA80+P+pPY+AJIkYKbmeOM/TO4/yFeAeHJXEV0jE/dDL/AI16J+1/490Xwfoehw6xfLaJNO0iqQSXwMcAZPc1882vxfsb6yQ6DpGrXslxE0cdwbcQwsSOoaRlz27V4WYxnUajFH0uVzhTi3J6n0j4S8c6VBFAbu6VN77V55OBz+VekaX8S9CjlIjuAdhwef1r5Y+Hug+Kb6GF38L+fEg4J1KBG5755r0Z/A2tGx8660K7tSgynk6laOB9N0iV848PFN339UfSKs2la/3M+mtA8WaXrMga2mSRjyRntXURXdvPyrAg8e1fEcer+LfAF+LqXTL+4slcMziLzXQd8+SZB0969N8J/tQ/D2byY7vxrpFnMAA8VzdLEyEdQQ2MGpdCovhjf8Ryq038UrfgfSJuYkchtvA4rE8R+LNK0WENe3EUStwNzAZrxvxN+1T8MtJtXdfHmk3krHYkNhL9qkY+yx7jXlN5401j4wTt/wAI5pOoXNkHP+kTw+QPqPNZKapTfxRt+BKqU7+7K577d/F7w+2Y0u0Z1JBUdR/iKwNc8eWF3bmOyZZZexU+3+eOtec6L8Ib0sq3tleSSA58pb+2XJ/CRqpeOPh9eWsYm07wzdxvEpx5WpQAn3zu60Ogv6aK9trpf7mQf2zba/rN4jPsuFVlMY6gHGcVgXh2vFLwQDkD1ry248b6n4D1gXupeHdWgggDLLcJGk5CHIyzI54HXpXTeHfid4d+IkTf2DqBupLfZ5sTRNGyA9MhgOuD0rqp0ZwakloYTq06icG7M+uvhRdi58GWa94spy2SO9dlXkfwE1aGayvLRJtxyGCnsehx+let4FfY0Zc1NM+Erw5KjQjDNNIzT8CmnmtjnG96Qin9OaTrxQAwjiilIooHZjR7U8AikXmnLxQIP4qcBikpRmgBR+RpaT2qprVxNZ6NfzwDM0UDvGP9oKSP1obsi0uZpI+Of2/PCM/iHW/BzC3lu4/tKKqIvBBbDqfwp/jDwrNq1v8AabCyFvbW8ICtGuBGF4wOMDv6dq53UPGd74hXUtO1f7THqNrc+ZiZ2w5DcSKG6HB9P0r1zwlbJ4i0YWMURJlTLlmLgfnxXymNxXMoySsfa4PA+wbhJ3eh4LD8W9b0G3GkeHreW7uslFkILkHPOB0/En86cPB/xK1/WjPqKXmuieHaitI6JASuQ428ZU/wng19aeHPAkeh2Kx33h+ErEvyXCojKw9cdRXR2I8N7dr29ujEYxFGST6ccV5tPGQhJtRTPVqYOdWCjzNeh84+G/C/i3wxbW67ZTPMg87y4+Poy5xn3FcJ8L/hNpHxE/aE8U2GqWtjeAyiN5JrdZQjIilsBhgEliPX5a+yfFUNtpeg3N7EhgWNDsDnbubHA9ua8j/Zl8B6p4R16/1LWFhe6vyJg0aksWdmd8k9su34Y9KTxS5JO9m+w54d3hFK9u/oeY/FT4C6L8J/j74TttHS1jTV9OuURI7ZYsSJhsgKAMkbhnriu3u9I8U6DoEVla2s6xOAwa1bBKk+ufl9+9ehftS+FbzxPHoGt6OitrPh29jvIwTjegOJEz6Fa9U8MW9lrGjwtEuC0YZE7YIzis3ieaMVe9tB0aXs5yvHR6nw5428CePdI1JptPgu70PCCk1r5i/Z2ODuBAJcjBGGPOc02Lx58TPCFlbwa6supQyID/pKESr1wuRzn65r7in03w9GJVvUe3lxho/PKkj3GazLjRtDnt2bTtHa+bG3cELBv+BNx+tdFTFx5FFxRlTwk4VHPmbufKXgy4Piqe7a5Q2VyVDSQ3pKY447c147a+AYPBWnajeWcdza6re6lMXMWVVIxK4iCj0xg/8AAjX2R4o8J3VjeNqU8Isv4Ut4yDge7Dv+deLeK4Y7fUMyqSD8obJwT7j1qcPi5QlpswxGDhUj7y1Ox/ZLuNRtpNRuPEDpp4iYxR/aZVXzQxyu31GMV9UDkA8EV8KXPinXAlnY6fFDa6W0kKXF5Km4kF1DBB/WvsT4X3Ml34D0iWVmc+UQpfqVDELn8AK+owuJ9rOULWsfJY7ArD041ea9zpugoPSnnk00+leoeENPJNJTiMCkIGaAG449qKUnFFBYwDHrTgDSA5p1BAoGDS4xxQOmaWgAps8S3NvJEwyrqVI9iKdnFKCPTFG5UXZnxJ8T9FMfii+mdVSaCNCSD1AAB/UV6B8HPGFr4b0+3a6VNsmVD9lANSfFPR4ItV8ZXEsi+ZDHlEPUhwSP51w/hTTUu5tNgmyIgoJX17n+dfB4lcqlDs2fplGSqck+6R9V2fxZ0adFCM057CCJn5/Ba0YfG2mqS0Ok3byYJyLZgD+YFY3guS0s7SJbeKONQoHCgV1s16bs48xI0AwD3NePHU9Rxiv+HPNvGt/qHiGWOW8tPsmnxHMduxG+RvUjsPatjwmj3WyYL8wHYVxHxX8cWHhTXkh1C6W3hEPmI8jgKeeeT+FYvgP9orwzfXYt9O1ezmuUOf3coY/lW/sJzV0jNzjF6nr/AIhLQ5dkKydQxHWuV0PxXc+GNb3GAyaZOdwCdYW7jHoetY3xJ/aJ0XSrBZNRvIIFxgO2Bk+2OprlPDHxs8PeKTappF3HqE8syIqx+ueePpmn9XnHVLQSqRnZdT6StfGWi38UcrSQlhyRLwR+lTXfirShEWW4gIPbef6CuVhbT4XEc8SMGHGcH8KnvJNIRNqwRrgYIxUvRaj9nHpc4X4n+LINQTZE4aJDxsB69jmvnrxs/wDofmglhuB9TzXtnjw2Bt5AoVV5wwNeHeJwJtEcJkYfrTw0byXqTXfLB2Oo8P6HH4p0vQ9Inie3gflpAcP3bjHTmvqLwnp66X4csLWNdsaR/KvoCSR+hrwzwhYWkmlWM8UryXYdY4wTwPlzmvoeFBFCiDGFUCvp8pi3Ocz5fP5clOnS+YpyTSUv50ba+mPixOvvSZP0pc80hOKAGnmilYA9aKAGAZpwHtSDpTug60AG2nUh4A9KaSKAFLDNJuxTd3FNL0AfP/7S2nx2Nwb8Eo17bCMgHh2V1HP0BFed6POw1KyK52iMZA6/56V6x+05olzd+GbXVohugsmKTDuodkww/EY/EV5Tov8Ao0OmXOAcnYzZ6AgV8hmUOWo3bf8AyPusrq89GKb2/wAz2bStY+yWiuWYEjp1rU0i+1rXpmnVGgtQQqb84f3+gq5o+j22paaihUJCj5iawfiT41v/AALY2yaNpt5fQqQsvkrkqeoBJ7deAK8XDwhOVpHtVq04r3Fdm9r/AMLNI8aWjHxBDFfvHwY5QCB/n8K848Tfsi+C71VltrT7FKiYjktSUkVsdiOaybX9rTQoLiTT9SF1DqHeAWzo3U5OCMfka6Nf2h9EkIe4s723jwDueBh+Nem4KmlynHF1qujX3mL4Q/ZO8PaffPPql1Pq068RveymQhfQBia9Q0r4b+HPDFyrWGjwWHykm5SL5gc+3Nce/wC0X4ZkCGJJ7qYNlVtYi+Oelcz4u/ax0rR7OQzWd/GYTt8x7Zucjp1z3H5UcvtGXarSWqPWvEHh29vbR5LWUPIi71U5DN9OT1/pXFXWoavbzG1vbee3cfKSRnP4jiuM8KftG6t4kSHUbfwpq8Onxud0kybFcHgYUn/Oa9ngvYfFCJePAY3VfMdZScxjngj1rmxFKnSV4mlHEVm7SR5F4mFzNFt8z92wZjx6V5rrU7RaW8TEFXKn5j35xXrHjthe3VvZW0I824bDAcYXufyB/KvLPH6i2PkxgACRUAx1rHDrmnGxpiJtQdz3P4aWkN5qmh28SBGjtI7iVieoAB4HqSV/CvdM54rzf4U+DbrQrVb7UUWK8e3SCOIMGMaADOSO5OPyr0QNjFfZ4Cg6FL3lZvU+FzPErEVlyu6St/mSA0EU0NxTga9I8YCKToKcTSfeoAYRiilb2ooAj6ml3c4pM8Ypu7rQA5n/ADppamluKYzUAKXppf2qNnphfHFAGJ4/0U+J/Bes6YoBe4tnWMH++Blf1Ar5p+HlxFqenrZzjDI20q3UHpX1cXzXy14v00+A/ivewL+6s75hdwkDAwxJI/BtwrxczoupT5luj38orqlUcHsz2PwhHeaNItszmSND8uT1HaupuYYtUmkLg71UnacDPtiuW0fV0lso3PUAEN2PFbdhdLfPgHM2ODjI/WvjqcXKpZn2EppRucT4g8K6dPc4vLGCZVbKybfmX8a1tJ8OLcxGFbtWiKhcOoJC9gQR2rqbjQhcxiYDc7/eHQ9v/r1BZ+FpIrmQw8OPkCy5APuDXQrxlytnXTxHuXtczYPBOm6bYNDbNFHLkMSCw55ORiuIvfC1g10WuIopJHb5ty5aUj+I/gMfgK9W1bSZfIdUs/LkZMblY8HpnFcUnh6d74fKRtzkEY/M1rUklZc33GscS+VtQs/kaXh3RopLFJJVVRMAEMY2qqntjGRWu9iukaK1sigYODjGX+prZtbMWOisXAcqMYySBx1zz6VwGp6+096bGElmdjjPQep+lY1qfLBWPMhWc6ju9jEnsooLm81i4IfYphiH93uf6V4paRv4x+JGl6dy8Ul8gIJz8u4Z/QGvSfit4jj0zS/sUByQNpJPU9ziue/Zx0E6n8RTfyplbG3ebJ/vt8o/Qn8q7cuo801JnLmNflpNLsfWSvwABjFSBxVUP3p6v719ufnpZV6lD1VVvepVb3oAnoqMNTg2aAF6c0UZyMZxRQBXJ9KaW4NIWqNmJoAcW4qN3/L1pGbiomagBzNULPSO+Kid6AJC/rXjn7SWhxXPhyy1pWCXdhMEB6Fkfgj8CAfzr1zf2rhfjP4buta8AahPEjv5aExoo6sMH8+n4ZrKpHng0bUZuFSL8zgPhv4kTU9MWKR9z4xg8812HhvV2TxALaU7GVsfMcgY6HGORXzt4a1efQLtHLMsMmM47GvQ5fFZtZrbUbd13oNsm0ZJX6e1fHxpRjU5ujPtJzk4cvU+oo54ri0jkVQyhf8AWYHHHp3ogZAoJYKd2Dk/rmuC8I+N4tX0+1aCXzVk+9LnLZHQYGMfjXWHXrYRuVkDMh5Lt8vTPPv7VVfD31ReFxSS5WXL+5dIyS+VJwc9h9az0BN39wGN+X+XOR9ajN8bgR7oyFkBAOByMdT9cfrVC81p7G5Ekax78BCr/dG44BJ7cVzU8PJs66uKSjuXNY1uNtPldZQqou0R8Id2Dg578Z9eleWaRceRaXWpyfLLcMxU5BKjPt61meMfHC6leJptlKGL5WVlOBGCeQR/eGO3Y1m+IdZMFglpbfdVcEjj6YrpxEVaNNHBhpOUpVGjg/F15LrmrvzvjjOefWvYf2cLWK103VZWXFxNKqg9iijt+LH9K8uXTvItGmYEuwLE45NfRfwl8FSaZ4AsZnGLl8zZxjIPJ/8AQlH4V6WWx5qjtskcOaS5KST3kzrQ+O+Ker+9Vt30pyv09a+hPlC6HFSK1U0epkfPNAFpXzzTww9cVXBz9KkDUATBgaKYDzRQBXY+9RMcClZqiZ+DQAM+e56VA7fWnlHYDCMc+1EdjPcEhUI924p2YXK0j8U+zsLnUWxBEzepwcCtbSvDTX0xWQkqPvFeg9ua7m10uK0tSsMQjAGFyoPPr15qlHuS5W2PML7S7m2V1DJvUZbg/L9ciuul0IXvg5LXjfIoG8r0brn8ifyqxrunxwWAjVd0sjAc8ZyeT7/hx/XdtLUHTgpAC7VOTgDg4PJ9mqmiU3c+CPF/gxNF8V674ekTy3s5iqehQgMMH2DAVxwafSJzY3anYT8jY619SfHHwht8UW2vzLsW9i8mVlHAdPutx6jI/AV5d4r8FR6vp7OB84HyuvrXw2Jbw+IlB7M/RcKlicNGot9jz3Q9ZvtC1JJLK48l2HUgFW+telaH491OxhZLnSvtqkE70lBUEgchSPbuT1ryZkm067W1ulIIPDn+IV6N4Uuo7mEK0hIA6Ec03XnTV46oz+rwk7S0Z0Fx8TdTkhdRpEgZ+29eCeuK5XW/G2vanbPb4TToJG3vtO5yc56n7vPpXT6hJGUILAYHJ6Vxep3CS3BLOSU/hP8AhSWJqS6WKeFpx8yrpSJp6BhkOfvHOTz6+9a1jZyalc72+ZF9KzrC0m1GVSQfLz8znjFdpYxR2FqSoEcKDDykcA/1Nck5/edlOk36Gx4E8FnxX4y03TzDvtBIJLt8fKkY52/Vjx+NfVP9kQWttJaxKEjRY0AUYxxn+g7Vw/wc8Mv4Y8Kx3U6Mt/fMblw4wyJ0VT+HJ9ya9JWHFszA8HOff5a+xy+g6NJX3Z8RmeI9tWdtlojy66sJGmuPLUkoclB6eoqiS0bbWBUjsRiuogOzxJswCj/IRt3cHtirl/o0N/GiMMTRPsJU8ketepKF9UeOpHIK/FTJJV3VfDNzpjblHmw9Q46j61mI2OvFZNNGl0y4jlqlV6qI/FTK2e9ICwrZopiv6frRQBpJ4cd2dWfaU65Ix/Wp4tCjjTeoLOvJPXHOD9K6p4EuIC8aCOZRnaD97HWs3ysXUckeAJFP4diD/npj0rdJIyu2Z91pyk27ckryWQZ49K07fQUlAZsjAJKDnOBntzyP5Vd8h5JkUqSI8MV65x2OB1xmtGFMRnaMnhV7j/ZPQjpxx+VD8gM2S2jsY0ESqihuoHJ9DyB2P6VoR2+zAJHuARjOM4xx29arSIJbhEA+VfmAA6jrj8M46VdZ2XjcSVHHPUjkfxelMg5jxbeQafbz3su5oLeLzSowWYAE4/E4HYV+ZX7R/wAWfiN4yvL+efWdT0mwXPkWNlO8MUS5wowpG49OTX6YeJY7W9nW2vGX7O2UBY5HP3e54yRXz98U/gVB4hc20dvl2m3MoX+6N35cVtC3UUrnnP7IfxR1f4s/Du/8L+KVN3/Zaf6PqbTeZOiEHAZCdzBWH3hz9a9XHhLUfDk5t7qJbywkGY7qE748Ece6/jg14p4K+FGp+DL3UJNJmudOuEuZFEkDlAQHbhvXp93/ABr2Hwn4i1u8ixMhUghZFQEM590xnaTjGCa8jG5bDGPmbs+jPZwGZ1cH7qV090cZ8Rfh0t9C9xbj5x8209R+NeXw303h+fbOTCwOMtxn8a+t108arZSEQgyYJZQAqEd9oPIPt0rzDxJ8PEvZZCbb5Qfu4zXxVeFTBVPZVP8Ahz73C1aOOh7SH/DHjl34wEi4WRcHr845qCxvBeypGctk5wg3E16A/wAHradv+PTj2XgV2fgf4cW+luNkB8ztmueWISWh2rDx3MDw94Rubq2jlu1Om2KjIQn97J9R/D+NdV8OvDqfEDxWjwxBPDmjyjdgfLPMOce+D1re8Wpp3hvSpBqySXDMm7yoZDGiLj+JxyD7CvLNa/bA1bSrWTT/AAz4c06wU5VLuENI2SMhtuRzn619BgMqq1XGtV0W6R8vj83p04yo0dXtc+u/FuvaX4I8O6nreu38Vho9jb+bPORweMhR6npgdyRXinhb9vj4WeJtVh0qSTVNBEzbIrzUYFWAsV2jcVYlRn145r5P8Xf8LK/aBubC38RatcXeng5FsgEUQwMktGB1xnk5PNc58Qv2eL/SkY26sxzwDgg9+D/Svs40klZs+ElUbdz9Ikdf7ZhnikWSNvnSSM5DDsQfSunv4POvrTKAsyA5Y4zye+P5185fse3eu6p8JdNtNeWT7Tp15JZQSyHLSQqFZc5543lfoBX0lccLYPjn7ucdevt/jUtWGP1S3M8BQDL45DDJH9R/Ksa60O2voEG3aefmXg11kyHY+eOVI7fw/hWfFGrhmkB3YzxgcDH+eags4i+8MvbLmGTzCOqmsxoZIT86Mv1FehX1uqs4OQQTg5zwAOx+tQnTknVlJR19G57ZqXFNDUjhVaiukvdKgO6NNqttJBVc8jkj9KKXIyuZHU6eWgiTj94uQ6554OD+hH5VEbQo4BBUpKQeMY/T8gP61sJBtdTjaJCCdwA5YEHpkdRVeIL51w+AwbawCyYP3BnAxgngn6rVkFdRsKouFkbDFiDhR2P0wccdKsyKixhc7UAJJ46d/bIJ9qLWMF5JGUSOeijAx68ZGMjP5UTgsHPLPnk9c8cdCTyCfyoAjt/vvJty+c7fQjr69ef6VKmUJJJOB8vbpyPTqD+lIqFUUR4fptPB6cjv3GRTljMTLgBT/CRxnHI7DsT60Acb4x0ue9tLrySzFFypUnkA57H0rA+HHiiDxLcCy1Fgmr6cRDcRvyZo+glGR1xjP416g0McsjRyYKkFfmxyrA461xWsfC+0udTh1OKSWzuE+bzYWKMOoPP5etUnpqS0PHgS3RJJViBctKST0GXbueB17Vh6p4Lk8NX8erWsRMY2pcRKGy8e3nBIIyM5HvXq2nQp5VxCDvMbAAnGRk++KshYrgxbxkEkHlsdB3PBptgjyTVfDckdnBr3h9FuoceY9nyzvnvg/dYEHg9l5qlHFb6xZrfWyEwEhZUZdrRP3Vh2r0Cawk8NXE11ZqZrJsPdWKAtu3YG9SO44yvcE1VbwvayXg1nRGiiadcyKsGY7jjowzyT8vP4V5mOwUMdT5Xo1sz1Mvx88BU5krp7o4iPTjdzxwQQF5XIVVQcmtzWvB9p4A0salqt3GLoruW2QbgD1+Y+nr/9cV3Md54Y8M6aNfaFrK62tG1sWLFX7gL/AJ4rzSKz1H4meIP7VvVdLTcFgigcY29MsDxnOPXFePgMmjTk54jW33Hs4/PJVUoYb3U1r3OAvPB2ofESaW6ukY2gcvHDbyglmzyzA4HIOQO1LB+zxpsUyl7SIyLuCvJGYmyDuXLD+lfRem6ClpbxeaocjbxJCGI42n7vvVuO3ijG/IU4U8Pz/dPyt0r6zm7HyJ5X4T+GFjp9wsxhCiPKIWbAG5cnDAfTrV3X/hnZaxC00sK7iCDuABPGPTaa71FZYSqsS21T8pOeOPunirLoYbfbGuWJb5RlM/L2B4pXA8w8GeHYPDMenWFnGoRFeSQqAMMfXGB0WutnUC2tW4JEiqenOQfx71b0rQvsrPLMVMxJYKGBC8E+h55pNQh/0SUAnKuJMYb2/wAe9DYkX343tjA+bnHQBR7VTt4tpIJwAQuQePU9x6VZmwYhgA7lY8YPPTtmopozGZW2/wB8/dPPOPSoGRzxiVBuyGbA9OSc/wAh71RRSkcuV7MemeScVpPEQhZVLYJPT3CjPA9+9N8ogKwUMo+UkDqFA9vU0DZmxj7NeFuGMcXB6nknPf1B/wAiip0i8/ULgMoKREIWcnBIA6kjpk/rRTuI2rJ0e3ictDGR1XeYyCHHB/OpZkLjALBSMZBDr94gZ79QPzoopMvoGQw2qVUdhvBx3Gcj13CoygfZ5e5scgjBAPUdOeu4fjRRS6AKzHqPquT/AMCX7w+opzR+V91eAMgAEZxyO5H3Se3aiimA2MGIuFIAXIBDY+6QR/DjpmnXEGbdgOxbHBxjAI5BxRRQAmmt/pkgJADrG5+bPYeoqWMlPnVs4QMcEnklepHA6UUU7gF7Hm4iYsxDqIwWAbnaMY2+/esh7SPSRNdW+TDnzDC2cDIydgPOSd34nrRRSZC3MSPwrceJLt7zUfMeRWOwLgBQOcc8Hoea6m006GxjIRFKgHBa3JPOGHI4ooqYycoq5pKKT0LO4SvtGyMEngqYzzhhzTby434VWxGuHJZ8cZXIyBRRVCIkQ5QEHywWT/nop4JGD1qZZfnzlsfR/wDnnRRQLqNbe8rEbuhxkN/c+orOvLfeblMAsExjbkjke/FFFAmW2TzY4g2Rwo+b3f3Pt6VENkgTOzPGT8vdifT2oooKQtshRVDqoJA5PQ8bj1X3p8VuEjj3JvJAzmMk/wB48nj0oooAhtrT7NE2UUOzksWBXvjkjP5f7XtRRRQJH//Z" alt="Chad Doty" />
+    </div>
     <div class="stat-grid">
       <div class="stat">
-        <div class="stat-number">$30<span style="font-size:1.5rem">M</span></div>
+        <div class="stat-number">$30<span style="font-size:1.3rem">M</span></div>
         <div class="stat-label">Global Portfolio</div>
       </div>
       <div class="stat">
-        <div class="stat-number">48<span style="font-size:1.5rem">K</span></div>
-        <div class="stat-label">Endpoints Managed</div>
+        <div class="stat-number">48<span style="font-size:1.3rem">K</span></div>
+        <div class="stat-label">Endpoints</div>
       </div>
       <div class="stat">
-        <div class="stat-number">25<span style="font-size:1.5rem">%</span></div>
-        <div class="stat-label">YoY Ticket Reduction</div>
+        <div class="stat-number">25<span style="font-size:1.3rem">%</span></div>
+        <div class="stat-label">Ticket Reduction</div>
       </div>
       <div class="stat">
-        <div class="stat-number">50<span style="font-size:1.5rem">+</span></div>
-        <div class="stat-label">Person Organization</div>
+        <div class="stat-number">20<span style="font-size:1.3rem">yr</span></div>
+        <div class="stat-label">At Scale</div>
       </div>
     </div>
   </div>
-</header>
+  <div class="scroll-hint">Scroll</div>
+</section>
 
-<section id="about">
+<!-- PAGE 2: ABOUT -->
+<section id="about" class="page">
   <div class="section-label">About</div>
   <div class="about-grid">
     <div>
@@ -192,143 +250,129 @@
   </div>
 </section>
 
-<section id="impact" style="background:#f0ede5;max-width:none;padding:6rem 0;">
-  <div style="max-width:1200px;margin:0 auto;padding:0 5rem;">
-    <div class="section-label">Proven Impact</div>
-    <h2>Results That Speak for Themselves</h2>
-    <div class="wins-grid reveal">
-      <div class="win-card">
-        <div class="win-metric">25% YoY</div>
-        <div class="win-desc">Global ticket volume reduction after deploying Nexthink for real-time telemetry and automated root-cause detection across 48,000+ endpoints.</div>
-      </div>
-      <div class="win-card">
-        <div class="win-metric">$1M+</div>
-        <div class="win-desc">Annual licensing savings from orchestrating the Okta → Azure AD (Entra ID) identity migration, while simultaneously hardening Zero Trust posture with Conditional Access.</div>
-      </div>
-      <div class="win-card">
-        <div class="win-metric">2,500/mo</div>
-        <div class="win-desc">Automated remote resolutions monthly via Nexthink client-observability — shifting the support model from reactive ticketing to proactive DEX management at global scale.</div>
-      </div>
-      <div class="win-card">
-        <div class="win-metric">$6M / 6mo</div>
-        <div class="win-desc">Secured C-Suite approval and delivered Microsoft Copilot enterprise-wide six months ahead of schedule, achieving a 20% uplift in DEX metrics within the first year of deployment.</div>
-      </div>
-      <div class="win-card">
-        <div class="win-metric">$750K</div>
-        <div class="win-desc">Annual OpEx savings from a security stack architectural audit — eliminating redundant platforms, reducing endpoint complexity, and improving enterprise system performance.</div>
-      </div>
-      <div class="win-card">
-        <div class="win-metric">6+ / Year</div>
-        <div class="win-desc">Global M&amp;A integrations led annually — authoring and executing Day-1 onboarding for M365 and Island.io, eliminating hardware provisioning bottlenecks for transitioning teams.</div>
-      </div>
+<!-- PAGE 3: IMPACT -->
+<section id="impact" class="page">
+  <div class="section-label">Proven Impact</div>
+  <h2>Results That Speak for Themselves</h2>
+  <div class="wins-grid reveal">
+    <div class="win-card">
+      <div class="win-metric">25% YoY</div>
+      <div class="win-desc">Global ticket volume reduction after deploying Nexthink for real-time telemetry and automated root-cause detection across 48,000+ endpoints.</div>
+    </div>
+    <div class="win-card">
+      <div class="win-metric">$1M+</div>
+      <div class="win-desc">Annual licensing savings from orchestrating the Okta → Azure AD migration, while simultaneously hardening Zero Trust posture with Conditional Access.</div>
+    </div>
+    <div class="win-card">
+      <div class="win-metric">2,500/mo</div>
+      <div class="win-desc">Automated remote resolutions monthly via Nexthink client-observability — shifting support from reactive ticketing to proactive DEX management at global scale.</div>
+    </div>
+    <div class="win-card">
+      <div class="win-metric">$6M / 6mo</div>
+      <div class="win-desc">Secured C-Suite approval and delivered Microsoft Copilot enterprise-wide six months ahead of schedule, achieving a 20% uplift in DEX metrics within year one.</div>
+    </div>
+    <div class="win-card">
+      <div class="win-metric">$750K</div>
+      <div class="win-desc">Annual OpEx savings from a security stack architectural audit — eliminating redundant platforms and improving enterprise system performance.</div>
+    </div>
+    <div class="win-card">
+      <div class="win-metric">6+ / Year</div>
+      <div class="win-desc">Global M&amp;A integrations led annually — Day-1 onboarding for M365 and Island.io, eliminating hardware provisioning bottlenecks for transitioning teams.</div>
     </div>
   </div>
 </section>
 
-<div id="services" style="background:var(--accent);padding:6rem 0;">
-  <div class="services-inner">
-    <div class="section-label">Services</div>
-    <h2>How I Can Help</h2>
-    <div class="services-grid">
-      <div class="service-card reveal">
-        <div class="service-num">01</div>
-        <div class="service-title">Fractional DEX Leadership</div>
-        <div class="service-desc">VP/Director-level embedded leadership for organizations standing up or maturing a DEX practice. Strategy, tooling, team coaching, and executive reporting — without the full-time headcount.</div>
-        <span class="service-tag">Fractional</span>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-num">02</div>
-        <div class="service-title">Nexthink Program Design</div>
-        <div class="service-desc">Platform deployment, data model architecture, campaign strategy, and automated remediation workflow design. Shift your support model from reactive ticketing to proactive experience management.</div>
-        <span class="service-tag">Implementation</span>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-num">03</div>
-        <div class="service-title">AI Governance &amp; Copilot Rollout</div>
-        <div class="service-desc">End-to-end Microsoft Copilot deployment strategy: OCM, governance frameworks, Power Platform controls, SharePoint and GitHub Enterprise policy — responsible adoption at enterprise scale.</div>
-        <span class="service-tag">AI Strategy</span>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-num">04</div>
-        <div class="service-title">Identity Modernization</div>
-        <div class="service-desc">IAM strategy and execution across Entra ID, Okta, SailPoint, and BeyondTrust PAM. Zero-trust architecture, CIAM for external users, IGA/JML automation, and audit-ready governance.</div>
-        <span class="service-tag">Identity</span>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-num">05</div>
-        <div class="service-title">M&amp;A IT Integration</div>
-        <div class="service-desc">Day-1 playbooks, identity onboarding, device provisioning, and DEX integration for acquisitions. Built from experience leading 6+ global integrations annually — including Island.io and M365 deployment.</div>
-        <span class="service-tag">M&amp;A</span>
-      </div>
-      <div class="service-card reveal">
-        <div class="service-num">06</div>
-        <div class="service-title">IT Organization Assessment</div>
-        <div class="service-desc">Operating model design, platform rationalization, and vendor strategy for IT leaders navigating scale, consolidation, or the shift to experience-first delivery. Honest diagnosis, specific roadmap.</div>
-        <span class="service-tag">Advisory</span>
-      </div>
+<!-- PAGE 4: SERVICES -->
+<section id="services" class="page">
+  <div class="section-label">Services</div>
+  <h2>How I Can Help</h2>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-title">Fractional DEX Leadership</div>
+      <div class="service-desc">VP/Director-level embedded leadership for organizations standing up or maturing a DEX practice. Strategy, tooling, team coaching, and executive reporting — without the full-time headcount.</div>
+      <span class="service-tag">Fractional</span>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-title">Nexthink Program Design</div>
+      <div class="service-desc">Platform deployment, data model architecture, campaign strategy, and automated remediation workflow design. Shift your support model from reactive ticketing to proactive experience management.</div>
+      <span class="service-tag">Implementation</span>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-title">AI Governance &amp; Copilot Rollout</div>
+      <div class="service-desc">End-to-end Microsoft Copilot deployment: OCM, governance frameworks, Power Platform controls, SharePoint and GitHub Enterprise policy — responsible adoption at enterprise scale.</div>
+      <span class="service-tag">AI Strategy</span>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <div class="service-title">Identity Modernization</div>
+      <div class="service-desc">IAM strategy and execution across Entra ID, Okta, SailPoint, and BeyondTrust PAM. Zero-trust architecture, CIAM, IGA/JML automation, and audit-ready governance.</div>
+      <span class="service-tag">Identity</span>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05</div>
+      <div class="service-title">M&amp;A IT Integration</div>
+      <div class="service-desc">Day-1 playbooks, identity onboarding, device provisioning, and DEX integration for acquisitions. Built from experience leading 6+ global integrations annually.</div>
+      <span class="service-tag">M&amp;A</span>
+    </div>
+    <div class="service-card">
+      <div class="service-num">06</div>
+      <div class="service-title">IT Organization Assessment</div>
+      <div class="service-desc">Operating model design, platform rationalization, and vendor strategy for IT leaders navigating scale, consolidation, or the shift to experience-first delivery.</div>
+      <span class="service-tag">Advisory</span>
     </div>
   </div>
-</div>
+</section>
 
-<section id="approach">
+<!-- PAGE 5: APPROACH -->
+<section id="approach" class="page">
   <div class="section-label">Approach</div>
   <h2>How I Work</h2>
-  <div class="process-list">
-    <div class="process-item reveal">
-      <span></span>
-      <div>
-        <div class="process-title">Outcomes Over Outputs</div>
-        <div class="process-desc">I measure success by what moves: ticket deflection rates, MTTR, experience score deltas, licensing spend eliminated. Not slide decks delivered.</div>
-      </div>
+  <div class="process-grid reveal">
+    <div class="process-item">
+      <div class="process-num">01</div>
+      <div class="process-title">Outcomes Over Outputs</div>
+      <div class="process-desc">I measure success by what moves: ticket deflection rates, MTTR, experience score deltas, licensing spend eliminated. Not slide decks delivered.</div>
     </div>
-    <div class="process-item reveal">
-      <span></span>
-      <div>
-        <div class="process-title">Quantitative Goals, Measurable Results</div>
-        <div class="process-desc">Every engagement translates qualitative objectives into platform-driven, auditable outcomes. If it can't be measured, the architecture isn't done yet.</div>
-      </div>
+    <div class="process-item">
+      <div class="process-num">02</div>
+      <div class="process-title">Quantitative Goals, Measurable Results</div>
+      <div class="process-desc">Every engagement translates qualitative objectives into platform-driven, auditable outcomes. If it can't be measured, the architecture isn't done yet.</div>
     </div>
-    <div class="process-item reveal">
-      <span></span>
-      <div>
-        <div class="process-title">Executive Alignment Without the Jargon</div>
-        <div class="process-desc">I've earned C-Suite approval for $6M+ programs. I know how to frame technical investment in business terms — and how to hold the room when the CFO asks hard questions.</div>
-      </div>
+    <div class="process-item">
+      <div class="process-num">03</div>
+      <div class="process-title">Executive Alignment Without the Jargon</div>
+      <div class="process-desc">I've earned C-Suite approval for $6M+ programs. I know how to frame technical investment in business terms — and how to hold the room when the CFO asks hard questions.</div>
     </div>
-    <div class="process-item reveal">
-      <span></span>
-      <div>
-        <div class="process-title">Build Durable Capability</div>
-        <div class="process-desc">My goal is to make myself unnecessary. Engagements are designed to mature your team, transfer knowledge, and leave lasting operating capacity — not dependency.</div>
-      </div>
+    <div class="process-item">
+      <div class="process-num">04</div>
+      <div class="process-title">Build Durable Capability</div>
+      <div class="process-desc">My goal is to make myself unnecessary. Engagements are designed to mature your team, transfer knowledge, and leave lasting operating capacity — not dependency.</div>
     </div>
   </div>
 </section>
 
-<div id="contact" style="background:var(--ink);padding:6rem 0;">
-  <div class="contact-inner">
-    <div class="section-label" style="color:var(--highlight);">Contact</div>
-    <h2 style="color:var(--white);">Ready to talk?</h2>
-    <p class="contact-sub">Available for fractional DEX leadership, advisory engagements, and select VP/Senior Director opportunities in DEX, EUC, and enterprise IT platform leadership.</p>
-    <div class="contact-links">
-      <a href="mailto:cwdoty@gmail.com" class="contact-link">✉ cwdoty@gmail.com</a>
-      <a href="https://linkedin.com/in/-chad-doty" class="contact-link">in LinkedIn</a>
-      <a href="tel:6514703691" class="contact-link">✆ 651.470.3691</a>
-    </div>
+<!-- PAGE 6: CONTACT -->
+<section id="contact" class="page">
+  <div class="section-label">Contact</div>
+  <h2>Ready to talk?</h2>
+  <p class="contact-sub">Available for fractional DEX leadership, advisory engagements, and select VP/Senior Director opportunities in DEX, EUC, and enterprise IT platform leadership.</p>
+  <div class="contact-links reveal">
+    <a href="mailto:cwdoty@gmail.com" class="contact-link">✉ cwdoty@gmail.com</a>
+    <a href="https://linkedin.com/in/-chad-doty" class="contact-link">in LinkedIn</a>
+    <a href="tel:6514703691" class="contact-link">✆ 651.470.3691</a>
   </div>
-</div>
-
-<footer>
-  <p>© 2026 Chad W. Doty · Lakeville, MN</p>
-  <p>DEX · Identity · Agentic AI</p>
-</footer>
+  <div class="footer-copy">© 2026 Chad W. Doty · Lakeville, MN · DEX · Identity · Agentic AI</div>
+</section>
 
 <script>
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
         observer.unobserve(entry.target);
       }
     });
